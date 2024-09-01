@@ -16,13 +16,14 @@ public class Evento {
     private Chef chefACargo;
     private List<Participante> participantes = new ArrayList<>();
 
-    public Evento(UUID id, String nombre, String descripcion, LocalDateTime fechaHora, String ubicacion, int capacidadMaxima) {
+    public Evento(UUID id, String nombre, String descripcion, LocalDateTime fechaHora, String ubicacion, int capacidadMaxima, int capacidadActual) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaHora = fechaHora;
         this.ubicacion = ubicacion;
         this.capacidadMaxima = capacidadMaxima;
+        this.capacidadActual = capacidadActual;
     }
 
     public UUID getId() {
