@@ -1,16 +1,22 @@
 package ar.com.gestiondeeventos.domain;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Chef {
     private UUID id;
-    private String nombre;
+    private String nombreYApellido;
     private String especialidad;
+    private List<Evento> eventosAsistidos;
 
-    public Chef(UUID id, String nombre, String especialidad) {
+    public Chef(UUID id, String nombre, List<String> especialidades, List<Evento> eventosAsistidos) {
         this.id = id;
-        this.nombre = nombre;
+        this.nombreYApellido = nombreYApellido;
         this.especialidad = especialidad;
+        this.eventosAsistidos = eventosAsistidos;
+    }
+
+    public Chef(){
     }
 
     public UUID getId() {
@@ -21,12 +27,12 @@ public class Chef {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreYApellido() {
+        return nombreYApellido;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreYApellido(String nombre) {
+        this.nombreYApellido = nombre;
     }
 
     public String getEspecialidad() {
@@ -35,5 +41,13 @@ public class Chef {
 
     public void setEspecialidad(String especialidad) {
         this.especialidad = especialidad;
+    }
+
+    public List<Evento> getEventosAsistidos() {
+        return eventosAsistidos;
+    }
+
+    public void setEventosAsistidos(List<Evento> eventosAsistidos) {
+        this.eventosAsistidos = eventosAsistidos;
     }
 }

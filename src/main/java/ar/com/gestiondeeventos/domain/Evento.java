@@ -1,6 +1,8 @@
 package ar.com.gestiondeeventos.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Evento {
@@ -9,7 +11,19 @@ public class Evento {
     private String descripcion;
     private LocalDateTime fechaHora;
     private String ubicacion;
-    private int capacidad;
+    private int capacidadMaxima;
+    private int capacidadActual;
+    private Chef chefACargo;
+    private List<Participante> participantes = new ArrayList<>();
+
+    public Evento(UUID id, String nombre, String descripcion, LocalDateTime fechaHora, String ubicacion, int capacidadMaxima) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fechaHora = fechaHora;
+        this.ubicacion = ubicacion;
+        this.capacidadMaxima = capacidadMaxima;
+    }
 
     public UUID getId() {
         return id;
@@ -43,12 +57,12 @@ public class Evento {
         this.fechaHora = fechaHora;
     }
 
-    public int getCapacidad() {
-        return capacidad;
+    public int getCapacidadMaxima() {
+        return capacidadMaxima;
     }
 
-    public void setCapacidad(int capacidad) {
-        this.capacidad = capacidad;
+    public void setCapacidadMaxima(int capacidadMaxima) {
+        this.capacidadMaxima = capacidadMaxima;
     }
 
     public String getUbicacion() {
@@ -57,5 +71,29 @@ public class Evento {
 
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    public Chef getChefACargo() {
+        return chefACargo;
+    }
+
+    public void setChefACargo(Chef chefACargo) {
+        this.chefACargo = chefACargo;
+    }
+
+    public int getCapacidadActual() {
+        return capacidadActual;
+    }
+
+    public void setCapacidadActual(int capacidadActual) {
+        this.capacidadActual = capacidadActual;
+    }
+
+    public List<Participante> getParticipantes() {
+        return participantes;
+    }
+
+    public void setParticipantes(List<Participante> participantes) {
+        this.participantes = participantes;
     }
 }

@@ -1,18 +1,16 @@
 package ar.com.gestiondeeventos.domain;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Participante {
     private UUID id;
-    private String nombre;
-    private List<String> interesesCulinarios;
+    private String nombreYApellido;
+    private String interesesCulinarios;
     private List<Evento> historialEventos;
 
-    public Participante(UUID id, String nombre, List<String> interesesCulinarios, List<Evento> historialEventos) {
-        this.id = id;
-        this.nombre = nombre;
-        this.interesesCulinarios = interesesCulinarios;
-        this.historialEventos = historialEventos;
+    public Participante() {
+        this.historialEventos = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -23,19 +21,19 @@ public class Participante {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreYApellido() {
+        return nombreYApellido;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreYApellido(String nombreYApellido) {
+        this.nombreYApellido = nombreYApellido;
     }
 
-    public List<String> getInteresesCulinarios() {
+    public String getInteresesCulinarios() {
         return interesesCulinarios;
     }
 
-    public void setInteresesCulinarios(List<String> interesesCulinarios) {
+    public void setInteresesCulinarios(String interesesCulinarios) {
         this.interesesCulinarios = interesesCulinarios;
     }
 
@@ -46,4 +44,10 @@ public class Participante {
     public void setHistorialEventos(List<Evento> historialEventos) {
         this.historialEventos = historialEventos;
     }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Nombre y Apellido: " + nombreYApellido + ", Interés Culinario: " + interesesCulinarios;
+    }
 }
+
