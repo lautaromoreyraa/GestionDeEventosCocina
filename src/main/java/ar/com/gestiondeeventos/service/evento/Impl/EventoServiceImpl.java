@@ -6,7 +6,7 @@ import ar.com.gestiondeeventos.domain.Participante;
 import ar.com.gestiondeeventos.service.Participante.ParticipanteService;
 import ar.com.gestiondeeventos.service.chef.ChefService;
 import ar.com.gestiondeeventos.service.evento.EventoService;
-import ar.com.gestiondeeventos.bd.BdEvento;
+import ar.com.gestiondeeventos.db.DbEvento;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
 public class EventoServiceImpl implements EventoService {
     private final ParticipanteService participanteService;
     private final ChefService chefService;
-    private BdEvento dbEvento;
+    private DbEvento dbEvento;
     public List<Evento> todosLosEventos= new ArrayList<>();
     public static List<Evento> eventosPasados = new ArrayList<>();
 
@@ -52,10 +52,11 @@ public class EventoServiceImpl implements EventoService {
 
         System.out.println("Ingrese la capacidad máxima del evento: ");
         int capacidadMaximaEvento = sc.nextInt();
+        int capacidadActual = 0;
 
 
         // verificacion simplificada
-        nuevoEvento = new Evento(UUID.randomUUID(), nombreEvento, descripcionEvento, fechaYHoraEvento, direccionEvento, capacidadMaximaEvento);
+        nuevoEvento = new Evento(UUID.randomUUID(), nombreEvento, descripcionEvento, fechaYHoraEvento, direccionEvento, capacidadMaximaEvento, capacidadActual);
         if (nuevoEvento.getNombre() == null || nuevoEvento.getFechaHora() == null) {
             throw new IllegalArgumentException("El nombre del evento y la fecha y hora son obligatorios.");
         }

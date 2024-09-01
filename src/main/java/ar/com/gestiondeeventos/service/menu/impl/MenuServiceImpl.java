@@ -1,14 +1,16 @@
 package ar.com.gestiondeeventos.service.menu.impl;
 
+import ar.com.gestiondeeventos.db.DbEvento;
 import ar.com.gestiondeeventos.domain.Evento;
 import ar.com.gestiondeeventos.service.Participante.ParticipanteService;
-import ar.com.gestiondeeventos.service.Resena.Impl.ResenaServiceImpl;
 import ar.com.gestiondeeventos.service.Resena.ResenaService;
+import ar.com.gestiondeeventos.service.archivos.ArchivosEventosService;
 import ar.com.gestiondeeventos.service.evento.EventoService;
 import ar.com.gestiondeeventos.service.menu.MenuService;
 import ar.com.gestiondeeventos.service.chef.ChefService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -18,12 +20,14 @@ public class MenuServiceImpl implements MenuService {
     private ParticipanteService participanteService;
     private ChefService chefService;
     private ResenaService resenaService;
+    private ArchivosEventosService archivosEventosService;
 
-    public MenuServiceImpl(EventoService eventoService, ParticipanteService participanteService, ChefService chefService, ResenaService resenaService) {
+    public MenuServiceImpl(EventoService eventoService, ParticipanteService participanteService, ChefService chefService, ResenaService resenaService, ArchivosEventosService archivosEventosService) {
         this.eventoService = eventoService;
         this.participanteService = participanteService;
         this.chefService = chefService;
         this.resenaService = resenaService;
+        this.archivosEventosService = archivosEventosService;
     }
 
     @Override
@@ -87,6 +91,7 @@ public class MenuServiceImpl implements MenuService {
                     resenaService.listarResenas();
                     break;
                 case 12:
+                    archivosEventosService.exportarEventosCsv(DbEvento.getEventoList());
                     break;
                 case 13:
                     break;
