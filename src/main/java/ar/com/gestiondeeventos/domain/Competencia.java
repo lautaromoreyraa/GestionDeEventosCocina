@@ -4,7 +4,7 @@ import ar.com.gestiondeeventos.enumeration.NivelParticipantes;
 
 import java.util.List;
 
-public class Competencia extends EventoGastronomico {
+public class Competencia extends Evento {
     private String premios;
     private int numeroJueces;
     private List criteriosEvaluacion;

@@ -4,7 +4,7 @@ import ar.com.gestiondeeventos.enumeration.NivelDificultad;
 
 import java.util.List;
 
-public class ClasesCocina extends EventoGastronomico {
+public class ClasesCocina extends Evento {
     private Enum <NivelDificultad> nivelDificultad;
     private String duracion;
     private String tematica;

@@ -3,7 +3,7 @@ package ar.com.gestiondeeventos.domain;
 
 import java.util.List;
 
-public class Degustacion extends EventoGastronomico {
+public class Degustacion extends Evento {
     private List tipoCocina;
     private int numeroPlatos;
     private List bebidasAcompanamiento;
