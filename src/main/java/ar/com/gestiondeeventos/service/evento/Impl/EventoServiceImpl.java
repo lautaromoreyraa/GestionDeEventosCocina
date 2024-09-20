@@ -6,15 +6,13 @@ import ar.com.gestiondeeventos.domain.Participante;
 import ar.com.gestiondeeventos.service.Participante.ParticipanteService;
 import ar.com.gestiondeeventos.service.chef.ChefService;
 import ar.com.gestiondeeventos.service.evento.EventoService;
-import ar.com.gestiondeeventos.db.DbEvento;
-
 import java.time.LocalDateTime;
 import java.util.*;
+
 
 public class EventoServiceImpl implements EventoService {
     private final ParticipanteService participanteService;
     private final ChefService chefService;
-    private DbEvento dbEvento;
     public List<Evento> todosLosEventos= new ArrayList<>();
     public static List<Evento> eventosPasados = new ArrayList<>();
 
@@ -86,64 +84,93 @@ public class EventoServiceImpl implements EventoService {
             respuesta = sc.nextLine().trim().toLowerCase();
 
             if ("no".equals(respuesta)) {
-                if ("participante".equalsIgnoreCase(tipoUsuario)) {
-                    participanteService.registrarParticipante();
-                } else if ("chef".equalsIgnoreCase(tipoUsuario)) {
-                    chefService.registrarChef();
-                }
+                registrarUsuarios(tipoUsuario);
             } else if ("si".equals(respuesta)) {
-                List<Evento> eventosDisponibles = listarEventosDisponibles(LocalDateTime.now());
-
-                if (!eventosDisponibles.isEmpty()) {
-                    System.out.println("Ingrese el ID del evento al que desea asignarse:");
-                    String idEventoStr = sc.nextLine();
-                    UUID idEvento = UUID.fromString(idEventoStr);
-                    Evento eventoSeleccionado = null;
-
-                    for (Evento evento : todosLosEventos) {
-                        if (evento.getId().equals(idEvento)) {
-                            eventoSeleccionado = evento;
-                            break;
-                        }
-                    }
-
-                    if (eventoSeleccionado != null) {
-                        System.out.println("Ingrese el ID del " + tipoUsuario + ":");
-                        String idUsuarioStr = sc.nextLine();
-                        UUID idUsuario = UUID.fromString(idUsuarioStr);
-
-                        if ("participante".equalsIgnoreCase(tipoUsuario)) {
-                            Participante participante = participanteService.buscarParticipantePorId(idUsuario);
-
-                            if (participante != null) {
-                                participante.getHistorialEventos().add(eventoSeleccionado);
-                                eventoSeleccionado.setCapacidadActual(eventoSeleccionado.getCapacidadActual() + 1);
-                                System.out.println("Participante inscrito correctamente en el evento: " + eventoSeleccionado.getNombre());
-                            } else {
-                                System.out.println("Participante no encontrado.");
-                            }
-                        } else if ("chef".equalsIgnoreCase(tipoUsuario)) {
-                            Chef chef = chefService.buscarChefPorId(idUsuario);
-
-                            if (chef != null) {
-                                eventoSeleccionado.setChefACargo(chef);
-                                chef.getEventosAsistidos().add(eventoSeleccionado);
-                                System.out.println("Chef asignado correctamente al evento: " + eventoSeleccionado.getNombre());
-                            } else {
-                                System.out.println("Chef no encontrado.");
-                            }
-                        }
-                    } else {
-                        System.out.println("Evento no encontrado.");
-                    }
-                }
+                inscribirParticipanteEnEvento(tipoUsuario, sc);
             } else {
                 System.out.println("Respuesta no válida. Por favor, responda con 'si' o 'no'.");
             }
         } while (!"si".equals(respuesta));
     }
 
+    @Override
+    public void registrarUsuarios(String tipoUsuario) {
+        if ("participante".equalsIgnoreCase(tipoUsuario)) {
+            participanteService.registrarParticipante();
+        } else if ("chef".equalsIgnoreCase(tipoUsuario)) {
+            chefService.registrarChef();
+        }
+    }
 
+    @Override
+    public void inscribirParticipanteEnEvento(String tipoUsuario, Scanner sc) {
+        List<Evento> eventosDisponibles = listarEventosDisponibles(LocalDateTime.now());
+
+        if (!eventosDisponibles.isEmpty()) {
+            Evento eventoSeleccionado = seleccionarEvento(sc, eventosDisponibles);
+
+            if (eventoSeleccionado != null) {
+                UUID idUsuario = obtenerIdParticipante(sc, tipoUsuario);
+                if (tipoUsuario.equalsIgnoreCase("participante")) {
+                    anotarParticipante(eventoSeleccionado, idUsuario);
+                } else if (tipoUsuario.equalsIgnoreCase("chef")) {
+                    asignarChefEvento(eventoSeleccionado, idUsuario);
+                }
+            } else {
+                System.out.println("Evento no encontrado.");
+            }
+        } else {
+            System.out.println("No hay eventos disponibles.");
+        }
+    }
+
+    @Override
+    public Evento seleccionarEvento(Scanner sc, List<Evento> eventosDisponibles) {
+        System.out.println("Ingrese el ID del evento al que desea asignarse:");
+        String idEventoStr = sc.nextLine();
+        UUID idEvento = UUID.fromString(idEventoStr);
+
+        for (Evento evento : eventosDisponibles) {
+            if (evento.getId().equals(idEvento)) {
+                return evento;
+            }
+        }
+        // si no se encuentra el evento
+        return null;
+    }
+
+    @Override
+    public UUID obtenerIdParticipante(Scanner sc, String tipoUsuario) {
+        System.out.println("Ingrese el ID del " + tipoUsuario + ":");
+        String idUsuarioStr = sc.nextLine();
+        return UUID.fromString(idUsuarioStr);
+    }
+
+    @Override
+    public void anotarParticipante(Evento evento, UUID idUsuario) {
+        Participante participante = participanteService.buscarParticipantePorId(idUsuario);
+
+        if (participante != null) {
+            participante.getHistorialEventos().add(evento);
+            evento.setCapacidadActual(evento.getCapacidadActual() + 1);
+            System.out.println("Participante inscrito correctamente en el evento: " + evento.getNombre());
+        } else {
+            System.out.println("Participante no encontrado.");
+        }
+    }
+
+    @Override
+    public void asignarChefEvento(Evento evento, UUID idUsuario) {
+        Chef chef = chefService.buscarChefPorId(idUsuario);
+
+        if (chef != null) {
+            evento.setChefACargo(chef);
+            chef.getEventosAsistidos().add(evento);
+            System.out.println("Chef asignado correctamente al evento: " + evento.getNombre());
+        } else {
+            System.out.println("Chef no encontrado.");
+        }
+    }
 
     @Override
     public void eliminarEvento(UUID idEvento) {
@@ -174,8 +201,6 @@ public class EventoServiceImpl implements EventoService {
             sc.close();
         }
     }
-
-
 
     @Override
     public List<Evento> listarEventosDisponibles(LocalDateTime fecha) {
@@ -262,7 +287,6 @@ public class EventoServiceImpl implements EventoService {
         return eventosPasados;
     }
 
-
     @Override
     public String getNombreEventoPorId(UUID idEvento) {
         for (Evento evento : getTodosLosEventos()) {
@@ -273,7 +297,6 @@ public class EventoServiceImpl implements EventoService {
         return "Evento no encontrado";
     }
 
-
     @Override
     public List<Evento> getTodosLosEventos() {
         return todosLosEventos;
@@ -283,5 +306,4 @@ public class EventoServiceImpl implements EventoService {
     public List<Evento> getEventosPasados() {
         return eventosPasados;
     }
-
 }
