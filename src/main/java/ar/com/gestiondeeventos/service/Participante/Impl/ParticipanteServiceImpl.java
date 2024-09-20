@@ -3,12 +3,14 @@ package ar.com.gestiondeeventos.service.Participante.Impl;
 import ar.com.gestiondeeventos.domain.Evento;
 import ar.com.gestiondeeventos.domain.Participante;
 import ar.com.gestiondeeventos.service.Participante.ParticipanteService;
-
 import java.util.*;
 
 public class ParticipanteServiceImpl implements ParticipanteService {
     private static List<Participante> todosLosParticipantes = new ArrayList<>();
 
+
+    public ParticipanteServiceImpl() {
+    }
 
     @Override
     public void registrarParticipante() {
@@ -27,7 +29,6 @@ public class ParticipanteServiceImpl implements ParticipanteService {
 
         todosLosParticipantes.add(nuevoParticipante);
         System.out.println("El participante se encuentra registrado bajo el id: " + nuevoParticipante.getId() +"\n");
-
     }
 
     @Override
@@ -40,7 +41,6 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         System.out.println("Lista de participantes: " + todosLosParticipantes);
         return todosLosParticipantes;
     }
-
 
     @Override
     public List<String> listarParticipantes() {
@@ -62,7 +62,6 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         }
         return listaDetalles;
     }
-
 
     @Override
     public Participante buscarParticipantePorId(UUID id) {

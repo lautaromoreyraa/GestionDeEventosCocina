@@ -2,7 +2,6 @@ package ar.com.gestiondeeventos.service.chef.Impl;
 
 import ar.com.gestiondeeventos.domain.Chef;
 import ar.com.gestiondeeventos.service.chef.ChefService;
-
 import java.util.*;
 
 public class ChefServiceImpl implements ChefService {
@@ -29,7 +28,6 @@ public class ChefServiceImpl implements ChefService {
 
         System.out.println("El Chef se encuentra registrado bajo el id: " + nuevoChef.getId() +"\n");
     }
-
 
     @Override
     public List<String> listarChefs() {
